@@ -47,7 +47,7 @@ class _WrapperState extends State<Wrapper> {
   Widget build(BuildContext context) {
     if(loading==false)
       { if(justVoiced)
-        return Search(voice,'search');
+        return Search(myPrefs,voice,'search');
       else
         return Home();
       }

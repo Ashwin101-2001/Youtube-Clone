@@ -6,43 +6,52 @@ import '../home.dart';
 
 class Switchclass extends StatefulWidget {
   String ch;
-  Switchclass({this.ch});
+  SharedPreferences pref;
+  Switchclass({this.ch,this.pref});
   @override
-  SwitchclassState createState() => SwitchclassState(ch:ch);
+  SwitchclassState createState() => SwitchclassState(ch:ch,pref:pref);
 }
 
 class SwitchclassState extends State<Switchclass> {
   String ch;
 
-  SwitchclassState({this.ch});
+  SwitchclassState({this.ch,this.pref});
 
-  bool toggle;
+  bool history;
   bool debug;
   SharedPreferences pref;
+  bool loading;
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
+    loading =true;
     init();
   }
 
   void init() async {
-    pref = await getmyPref();
-    bool x = pref.getBool("toggle");
-    toggle=(x!= null ? x : true);
-    pref.setBool("toggle",toggle);
+    if(pref==null)
+    pref = await SharedPreferences.getInstance();
+    bool x = pref.getBool("history");
+    history=(x!= null ? x : true);
+    print("hist:$history");
+    pref.setBool("history",history);
 
     x = pref.getBool("debug");
     debug=(x!= null ? x : false);
+    print("debug:$debug");
     pref.setBool("debug", debug);
+    setState(() {
+      loading=false;
+    });
 
   }
 
   @override
   Widget build(BuildContext context) {
     switch (ch) {
-      case "toggle":
+      case "history":
         {
           return SwitchListTile(
             title: Text("History", style: TextStyle(
@@ -50,11 +59,11 @@ class SwitchclassState extends State<Switchclass> {
             subtitle: Text("on/off ? ", style: TextStyle(
                 color: Colors.black, fontWeight: FontWeight.bold,fontSize: 15),),
             secondary: Icon(Icons.history, color: Colors.pink[500],),
-            value: toggle!=null?toggle:true,
+            value: history!=null?history:true,
             onChanged: (value) {
-              pref.setBool("toggle", value);
+              pref.setBool("history", value);
               setState(() {
-                toggle = value;
+                history = value;
               });
             },
 

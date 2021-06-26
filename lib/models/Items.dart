@@ -1,5 +1,6 @@
 
 import 'package:flutter/material.dart';
+import 'package:ytube_search/utilities/functions.dart';
 
 import 'channel.dart';
 
@@ -56,11 +57,11 @@ class Item {
           newTitle += "\n";
         }
       }
-      newTitle=newTitle.replaceAll("&amp;", "&");
+      newTitle=removeAndFromTitles(newTitle);
       print("$newTitle");
       return newTitle;
     } else {
-      this.title=this.title.replaceAll("&amp;", "&");
+      this.title=removeAndFromTitles(this.title);
       print("${this.title}");
       return this.title;
     }

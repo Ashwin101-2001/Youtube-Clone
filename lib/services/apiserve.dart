@@ -24,14 +24,16 @@ class APIService {
   final String _baseUrl = 'www.googleapis.com';
   String _nextPageToken = '';
 
-  Future<List<Item>> fetchResult({String query}) async {
+  Future<List<Item>> fetchResult(String query,SharedPreferences myPrefs,[DatabaseHelper dbh, Database db]) async {
+    if(dbh==null)
     dbh = DatabaseHelper();
+    if(db==null)
     db = await dbh.database;
     List<Curl> curls = await dbh.getcurlList();
+    bool history=myPrefs.getBool("history");
 
     query = getquerywithoutspace(query);
 
-    SharedPreferences myPrefs = await SharedPreferences.getInstance(); //changed
     bool debug = myPrefs.getBool("debug");
     int max = debug != null ? (debug == true ? 5 : 10) : 10;
 
@@ -59,6 +61,7 @@ class APIService {
 
         String cUrl;
 
+
         if (curlGivenCid(curls, cid) == null) //changed
         {
           print("not already searched");
@@ -76,6 +79,7 @@ class APIService {
           cUrl = curlGivenCid(curls, cid).URL;
           curlGivenCid(curls, cid).updateSearches(query); //is query already there
           curlGivenCid(curls, cid).recentDate=DateTime.now().toString();
+          if(history)
           dbh.insertCurl(curlGivenCid(curls, cid));
           print("CID:$cUrl");
         }
@@ -114,8 +118,10 @@ class APIService {
                }
 
             channels[id] = t;
-            Curl c=Curl(id,channels[id],DateTime.now().toString(),DateTime.now().toString(),query);
-             dbh.insertCurl(c);
+            if(history)
+              { Curl c=Curl(id,channels[id],DateTime.now().toString(),DateTime.now().toString(),query);
+              dbh.insertCurl(c);}
+
           }
 
           for (Item i in items) {

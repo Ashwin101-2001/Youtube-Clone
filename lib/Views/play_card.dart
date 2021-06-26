@@ -34,7 +34,7 @@ class PlayCard extends StatelessWidget {
              Navigator.push(
               context,
               MaterialPageRoute(
-                  builder: (context) => Search(play.id,'play',this.y ,play)),
+                  builder: (context) => Search(null,play.id,'play',this.y ,play)),
             );},
 
           ),
@@ -54,7 +54,8 @@ class PlayCard extends StatelessWidget {
                             Navigator.push(
                               context,
                               MaterialPageRoute(
-                                  builder: (context) => Search(play.id,'play',this.y,play)),
+                                  builder: (context) => Search(null,play.id,'play',this.y,play)),
+                              //SOS
                             );
                           },
                         ),

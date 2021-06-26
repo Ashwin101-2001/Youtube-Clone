@@ -12,10 +12,11 @@ import 'Curl.dart';
 
 class MyCustomForm extends StatefulWidget {
   String voiceSearch;
-  MyCustomForm({this.voiceSearch});
+  SharedPreferences myPrefs;
+  MyCustomForm({this.voiceSearch,this.myPrefs});
   @override
   MyCustomFormState createState() {
-    return MyCustomFormState(voiceSearch: voiceSearch);
+    return MyCustomFormState(voiceSearch: voiceSearch,myPrefs: myPrefs);
   }
 }
 
@@ -23,7 +24,7 @@ class MyCustomForm extends StatefulWidget {
 class MyCustomFormState extends State<MyCustomForm> {
   String voiceSearch;
 
-  MyCustomFormState({this.voiceSearch});
+  MyCustomFormState({this.voiceSearch,this.myPrefs});
 
   final _formKey = GlobalKey<FormState>();
   final TextEditingController scontroller = TextEditingController();
@@ -45,7 +46,11 @@ class MyCustomFormState extends State<MyCustomForm> {
     // TODO: implement initState
     print("vs:$voiceSearch");
     slist= List<String>();
+    if(voiceSearch!=null)
     scontroller.text = voiceSearch;
+    else
+      scontroller.text = "";
+
     super.initState();
     init();
   }
@@ -77,6 +82,7 @@ class MyCustomFormState extends State<MyCustomForm> {
   @override
   Widget build(BuildContext context) {
     print('build form');
+    print(slist);
 
       return Form(
 
@@ -95,7 +101,7 @@ class MyCustomFormState extends State<MyCustomForm> {
             Navigator.pushReplacement(
               context,
               MaterialPageRoute(
-                  builder: (context) => Search(item, 'search',)),
+                  builder: (context) => Search(myPrefs,item, 'search',)),
             );
           },
 
@@ -146,7 +152,7 @@ class MyCustomFormState extends State<MyCustomForm> {
                 Navigator.pushReplacement(
                   context,
                   MaterialPageRoute(
-                      builder: (context) => Search(item, 'search',)),
+                      builder: (context) => Search.withId(myPrefs,dbh,db,item, 'search',)),
                 );
               },
 
@@ -174,7 +180,11 @@ class MyCustomFormState extends State<MyCustomForm> {
                         child: FlatButton(
                             onPressed: () async {
                               await deleteQuery(item);
-                              Navigator.pushReplacementNamed(context, 'home');
+                              Navigator.pushReplacement(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) =>Home(myPrefs)),
+                              );
                             },
                             child: Icon(Icons.delete, color: Colors.black,))),
                     Expanded(flex: 2,

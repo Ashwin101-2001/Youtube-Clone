@@ -63,13 +63,14 @@ class ListCard extends StatelessWidget {
        Navigator.push(
          context,
          MaterialPageRoute(
-             builder: (context) => Search(play1.id,'play',item.channel.profilePicture.url,play1)),
+             builder: (context) => Search(null,play1.id,'play',item.channel.profilePicture.url,play1)),
        );}
         else
           { Navigator.push(
             context,
             MaterialPageRoute(
-                builder: (context) => Search(this.play.id,'play',this.play.cthumbnail.url,this.play)),
+                builder: (context) => Search(null,this.play.id,'play',this.play.cthumbnail.url,this.play)),
+                //SOS
           );}},
 
       child: Container(

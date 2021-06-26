@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:ytube_search/Views/Loading.dart';
+import 'package:ytube_search/Views/horizontalPlaylistCard.dart';
+import 'package:ytube_search/Views/horizontalVideoCard.dart';
 import 'package:ytube_search/home.dart';
 import 'package:ytube_search/models/Items.dart';
 import 'package:ytube_search/models/Playlists.dart';
@@ -71,102 +74,107 @@ class  DisplayChannelState extends State< DisplayChannel> {
     // data =  ModalRoute.of(context).settings.arguments;
     // this.q=data['q'];
     if(items1!=null)
-    { return DefaultTabController(
-      length: 3,
-      child: new Scaffold(
-        appBar: AppBar(
-          actions: <Widget>[
-            Container(
-              child: Row(children: <Widget>[
-                Container(
-                  width: 30,
-
-                  child: Image(image: AssetImage("android/assets/aky.png"),),
-                ),
-                Text("YouTube", style: youtube,),
-              ],),),
-            Container(
-                padding: EdgeInsets.only(left: 40, bottom: 15),
-                width: 260,
-                child: Container(
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-                    crossAxisAlignment: CrossAxisAlignment.end,
-                    children: <Widget>[
-                      Icon(Icons.cast),
-                      GestureDetector(child: Icon(Icons.search,color: Colors.white,),
-                          onTap:(){
-                            Navigator.of(context).pushAndRemoveUntil(
-                                MaterialPageRoute(builder: (context) => Home()),
-                                    (Route<dynamic> route) => false);}
-                      ),
+    { return OrientationBuilder(
+        builder: (context, orientation) {
+          return DefaultTabController(
+            length: 3,
+            child: new Scaffold(
+              appBar: AppBar(
+                actions: <Widget>[
+                  Container(
+                    child: Row(children: <Widget>[
                       Container(
-                        height: 30,
                         width: 30,
 
-                        child: CircleAvatar(
-                            backgroundColor:Colors.black12,
-                            backgroundImage: AssetImage('android/assets/youtube_logo.png')),
+                        child: Image(image: AssetImage("android/assets/aky.png"),),
+                      ),
+                      Text("YouTube", style: youtube,),
+                    ],),),
+                  Container(
+                      padding: EdgeInsets.only(left: 40, bottom: 15),
+                      width: 260,
+                      child: Container(
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceAround,
+                          crossAxisAlignment: CrossAxisAlignment.end,
+                          children: <Widget>[
+                            Icon(Icons.cast),
+                            GestureDetector(child: Icon(Icons.search,color: Colors.white,),
+                                onTap:(){
+                                  Navigator.of(context).pushAndRemoveUntil(
+                                      MaterialPageRoute(builder: (context) => Home()),
+                                          (Route<dynamic> route) => false);}
+                            ),
+                            Container(
+                              height: 30,
+                              width: 30,
+
+                              child: CircleAvatar(
+                                  backgroundColor:Colors.black12,
+                                  backgroundImage: AssetImage('android/assets/youtube_logo.png')),
+                            )
+                          ],
+                        ),
                       )
-                    ],
                   ),
-                )
-            ),
-          ],
-          backgroundColor: tabBarColor,
-          bottom:new TabBar(
-            labelStyle: tabTextStyle,
-            tabs: tabList,
-            labelColor: tabBarSelectedIconsColor,
-            unselectedLabelColor: tabBarUnselectedIconsColor,
-            indicatorColor: Colors.transparent,
-
-          ),
-        ),
-        body:
-        TabBarView(
-          children: [
-            Column(
-              children:[Container(
-                margin:EdgeInsets.only(left: 50.0),
-                height: 100,
-                child: ListTile(
-                  leading:  CircleAvatar(backgroundImage:q.profilePicture),
-                  title: Container(
-                    padding:EdgeInsets.only(left:60),
-                    child:Text(q.channelName,style: TextStyle(fontSize: 18,color: Colors.white,fontWeight: FontWeight.bold),),),
-                  subtitle: Container(
-                    padding:EdgeInsets.only(left:60),
-                    child:Wrap(
-                      direction: Axis.vertical,
-                      children: [
-                        Text('100 subscribers',style: TextStyle(fontSize: 15,color: Colors.grey),),
-
-                        Text('100 videos',style: TextStyle(fontSize: 15,color: Colors.grey),)],
-                    ),),
+                ],
+                backgroundColor: tabBarColor,
+                bottom:new TabBar(
+                  labelStyle: tabTextStyle,
+                  tabs: tabList,
+                  labelColor: tabBarSelectedIconsColor,
+                  unselectedLabelColor: tabBarUnselectedIconsColor,
+                  indicatorColor: Colors.transparent,
 
                 ),
               ),
-                Container(
+              body:
+              TabBarView(
+                children: [
+                  Column(
+                      children:[Container(
+                        margin:EdgeInsets.only(left: 50.0),
+                        height: 100,
+                        child: ListTile(
+                          leading:  CircleAvatar(backgroundImage:q.profilePicture),
+                          title: Container(
+                            padding:EdgeInsets.only(left:60),
+                            child:Text(q.channelName,style: TextStyle(fontSize: 18,color: Colors.white,fontWeight: FontWeight.bold),),),
+                          subtitle: Container(
+                            padding:EdgeInsets.only(left:60),
+                            child:Wrap(
+                              direction: Axis.vertical,
+                              children: [
+                                Text('100 subscribers',style: TextStyle(fontSize: 15,color: Colors.grey),),
 
-                )
-              ]
+                                Text('100 videos',style: TextStyle(fontSize: 15,color: Colors.grey),)],
+                            ),),
+
+                        ),
+                      ),
+                        Container(
+
+                        )
+                      ]
+                  ),
+
+                  Container(
+                    color: backgroundColor,
+                    child: ListView(children: getplaylists(orientation),),),
+                  Container(
+                    color: backgroundColor,
+                    child: ListView(children: getVideos(orientation),),),
+
+
+                ],
+              ),
+
+              backgroundColor: tabBarColor,
+
             ),
+          );
+        }
 
-            Container(
-              color: backgroundColor,
-              child: ListView(children: getplaylists(),),),
-            Container(
-              color: backgroundColor,
-              child: ListView(children: getVideos(),),),
-
-
-          ],
-        ),
-
-        backgroundColor: tabBarColor,
-
-      ),
     );}
     else{
       return Scaffold(
@@ -214,13 +222,7 @@ class  DisplayChannelState extends State< DisplayChannel> {
           backgroundColor: tabBarColor,
 
         ),
-        body:Center(
-          child: CircularProgressIndicator(
-            valueColor: AlwaysStoppedAnimation<Color>(
-              Theme.of(context).primaryColor, // Red
-            ),
-          ),
-        ),
+        body:Loader(),
       );
 
     }
@@ -230,7 +232,7 @@ class  DisplayChannelState extends State< DisplayChannel> {
 
 
 
-  List<Widget> getplaylists() {
+  List<Widget> getplaylists(Orientation o) {
     List<Widget> cards = [];
 
     for  (Playlist item in items1) {
@@ -238,13 +240,18 @@ class  DisplayChannelState extends State< DisplayChannel> {
       item.cname=this.q.channelName;
       item.cthumbnail=this.q.profilePicture;
       //cards.add(PlayCard(play:item,y:this.q.profilePicture.url));
+      if(o==Orientation.portrait)
       cards.add(ListCard(null,item));
+      else
+        { cards.add(hPlayCard(null,item));
+
+        }
 
     }
     print(cards.toString());
     return cards;
   }
-  List<Widget> getVideos() {
+  List<Widget> getVideos(Orientation o) {
     List<Widget> cards = [];
 
 
@@ -261,7 +268,10 @@ class  DisplayChannelState extends State< DisplayChannel> {
 
     for  (Item item in items2) {
       //print('looping');
+      if(o==Orientation.portrait)
       cards.add(VideoCard2(item:item));
+      else
+        cards.add(Hcard(item: item,));
     }
     print(cards.toString());
     return cards;

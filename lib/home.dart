@@ -28,13 +28,17 @@ import 'models/switches.dart';
 const platformMethodChannel =
 const MethodChannel('ysearch');
 class Home extends StatefulWidget {
+  SharedPreferences my;
+  Home([this.my]);
+
   @override
   _HomeState createState() => _HomeState();
 }
 
 
 class _HomeState extends State<Home> {
-  NativeSharedPreferences prefs;
+  _HomeState([this.myPrefs]);
+
   bool loading;
   List<String> slist= List<String> ();
   String s;
@@ -70,23 +74,15 @@ class _HomeState extends State<Home> {
     // TODO: implement initState
     loading=true;
     super.initState();
+    if(myPrefs==null)
     _init();
   }
      _init ()async{
       // ignore: unnecessary_statements
 
-       myPrefs=await getmyPref();
-       smap=getsuggestions(myPrefs);
-       smap.forEach((key, value) {slist.add(key);});
-       prefs = await NativeSharedPreferences.getInstance();
-       s="flutter.speech";
-       s=prefs.get(s);
-       if(slist.contains(s))
-         {
-           s="";
-         }
+       myPrefs=await SharedPreferences.getInstance();
 
-       print(s);
+       print("SSS:${myPrefs.getString("speech")}");
       setState(() {
         loading =false;
 
@@ -112,7 +108,7 @@ class _HomeState extends State<Home> {
                     Expanded(flex:2,
                         child: Container()),
 
-                    Expanded(child: MyCustomForm(voiceSearch: this.s,),
+                    Expanded(child: MyCustomForm(voiceSearch: null,),
 
                       flex:36,),
 
@@ -157,11 +153,11 @@ class _HomeState extends State<Home> {
                     Container(
                         color:Colors.white,
                         //padding:EdgeInsets.only(bottom:50.0,top:20),
-                        child: Switchclass(ch: "toggle",)),
+                        child: Switchclass(ch: "history",pref: myPrefs,)),
                     SizedBox(height:30),
                     Container(
                         color:Colors.white,
-                        child: Switchclass(ch: "debug",)),
+                        child: Switchclass(ch: "debug",pref: myPrefs)),
 
 
                   ]),
@@ -209,35 +205,5 @@ class _HomeState extends State<Home> {
 
 
 
-  Map<String,String> getsuggestions( SharedPreferences myPrefs )
-  {
-    Map<String,String> map= Map<String,String>();
 
-
-
-   final keys = myPrefs.getKeys();
-
-   for(String key in keys)
-     { int l=key.length;
-       if((l>=8)&&(l<=12))
-       {
-         String s=key.substring(0,7);
-         String x="search#";
-         if(s==x)
-         {print("key:$key");
-         //if(key.length>8)
-         String no=key.substring(7);
-         print(no);
-         map[myPrefs.getString(key)]=no;
-
-         }
-       }
-
-
-     }
-
-  return map;
-
-
-  }
 

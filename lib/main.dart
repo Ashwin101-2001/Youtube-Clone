@@ -24,7 +24,7 @@ class _MyAppState extends State<MyApp> {
         debugShowCheckedModeBanner: false,
         home: Wrapper(),
         routes:
-        {  'search': (context) => Search(),
+        {
           'home':(context) =>Home(),
 
         }
