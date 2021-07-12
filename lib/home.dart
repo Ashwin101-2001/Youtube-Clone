@@ -46,19 +46,20 @@ class _HomeState extends State<Home> {
   SharedPreferences myPrefs;
   Future<bool> _onWillPop() {
 
-     return showDialog(
+    return showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        title: Text('Are you sure?',style: TextStyle(fontWeight: FontWeight.bold),),
-        content: Text('Do you want to exit Ytube Search ?',style: TextStyle(),),
+        backgroundColor: Colors.black,
+        title: Text('Are you sure?',style: TextStyle(fontWeight: FontWeight.bold,color: Colors.white),),
+        content: Text('Do you want to exit App ?',style: TextStyle(color: Colors.white70),),
         actions: <Widget>[ FlatButton(
           onPressed: () => exit(0),
           /*Navigator.of(context).pop(true)*/
-          child: Text('Yes',style: TextStyle(),),
+          child: Text('Yes',style: TextStyle(color: Colors.red),),
         ),
           FlatButton(
             onPressed: () => Navigator.of(context).pop(false),
-            child: Text('No',style: TextStyle(),),
+            child: Text('No',style: TextStyle(color: Colors.green),),
           ),
 
         ],
@@ -68,6 +69,7 @@ class _HomeState extends State<Home> {
 
 
   }
+
 
   @override
   void initState() {
