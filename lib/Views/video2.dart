@@ -5,7 +5,7 @@ import 'package:ytube_search/models/video.dart';
 import 'package:ytube_search/Channeldisplay.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:ytube_search/models/Items.dart';
-import 'package:ytube_search/utilities/screens_size.dart';
+import 'file:///D:/Ashwin/varnam_attendance/lib/utilities/screens_size.dart';
 
 class VideoCard2 extends StatelessWidget {
   VideoCard2({this.item});

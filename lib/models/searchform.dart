@@ -5,6 +5,7 @@ import 'package:autocomplete_textfield/autocomplete_textfield.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:ytube_search/services/Databasehelper.dart';
 import 'package:ytube_search/utilities/functions.dart';
+import 'package:http/http.dart' as http;
 
 import '../Search.dart';
 import '../home.dart';
@@ -148,7 +149,9 @@ class MyCustomFormState extends State<MyCustomForm> {
           itemBuilder: (context, item) {
             print(' item builder ');
             return GestureDetector(
-              onTap: () {
+              onTap: () async {
+                //var response = await http.get('http://127.0.0.1:5000/hello');
+                //print(response.body.toString());
                 Navigator.pushReplacement(
                   context,
                   MaterialPageRoute(
